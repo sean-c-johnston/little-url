@@ -6,21 +6,23 @@ namespace LittleUrl.Api.Domain;
 
 public class UrlShortener
 {
-    private readonly UrlRepository _urlRepository;
+    private readonly IUrlRepository _urlRepository;
 
-    public UrlShortener(UrlRepository urlRepository)
+    public UrlShortener(IUrlRepository urlRepository)
     {
         _urlRepository = urlRepository;
     }
 
     public string Shorten(string originalUrl)
     {
-        return new UrlHashing().GenerateHash(originalUrl);
+        var shortCode = new UrlHashing().GenerateHash(originalUrl);
+        _urlRepository.Add(shortCode, originalUrl);
+        return shortCode;
     }
 
-    public object Get(object shortCode)
+    public string Resolve(string shortCode)
     {
-        throw new NotImplementedException();
+        return _urlRepository.Get(shortCode);
     }
 }
 

@@ -16,7 +16,7 @@ public class CreateLittleUrl
         
         var shortCode = urlShortener.Shorten(originalUrl);
 
-        var result = urlShortener.Get(shortCode);
+        var result = urlShortener.Resolve(shortCode);
         
         result.Should().Be(originalUrl);
     }

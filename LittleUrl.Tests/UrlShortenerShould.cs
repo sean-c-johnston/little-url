@@ -1,4 +1,5 @@
 using FluentAssertions;
+using LittleUrl.Api.Data;
 using LittleUrl.Api.Domain;
 
 namespace LittleUrl.Tests;
@@ -11,7 +12,8 @@ public class UrlShortenerShould
 
     public UrlShortenerShould()
     {
-        _urlShortener = new UrlShortener(null!);
+        var urlRepository = new FakeUrlRepository();
+        _urlShortener = new UrlShortener(urlRepository);
     }
 
     [Fact]
@@ -47,7 +49,45 @@ public class UrlShortenerShould
 
         shortcode1.Should().NotBe(shortcode2);
     }
-    
+
+    [Fact]
+    public void ResolveAUrl()
+    {
+        var shortcode = _urlShortener.Shorten(Google);
+        var resolvedUrl = _urlShortener.Resolve(shortcode);
+        
+        shortcode.Should().NotBe(Google);
+        resolvedUrl.Should().Be(Google);
+    }
+
+    [Fact]
+    public void ResolveMultipleUrls()
+    {
+        var googleShortcode = _urlShortener.Shorten(Google);
+        var yahooShortcode = _urlShortener.Shorten(Yahoo);
+        
+        var resolvedGoogle = _urlShortener.Resolve(googleShortcode);
+        var resolvedYahoo = _urlShortener.Resolve(yahooShortcode);
+        
+        resolvedGoogle.Should().Be(Google);
+        resolvedYahoo.Should().Be(Yahoo);
+    }
+
     // todo
     // humanized short urls like 'quick-hyper-eggplant' (giphy etc)
+}
+
+public class FakeUrlRepository : IUrlRepository 
+{
+    private readonly Dictionary<string, string> _urls = new();
+
+    public void Add(string shortCode, string url)
+    {
+        _urls[shortCode] = url;
+    }
+
+    public string Get(string shortCode)
+    {
+        return _urls[shortCode];
+    }
 }
