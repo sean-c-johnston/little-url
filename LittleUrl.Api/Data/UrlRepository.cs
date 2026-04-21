@@ -16,7 +16,7 @@ public class UrlRepository : IUrlRepository
 
     public string Get(string shortCode)
     {
-        throw new NotImplementedException();
+        return _storageProvider.Get(shortCode);
     }
 }
 

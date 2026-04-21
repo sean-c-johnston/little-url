@@ -6,4 +6,9 @@ public class InMemoryStorage : IStorageProvider
     {
         throw new NotImplementedException();
     }
+
+    public string Get(string shortCode)
+    {
+        throw new NotImplementedException();
+    }
 }

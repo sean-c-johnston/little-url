@@ -75,6 +75,7 @@ public class UrlShortenerShould
 
     // todo
     // humanized short urls like 'quick-hyper-eggplant' (giphy etc)
+    // create proper objects for the urls instead of strings
 }
 
 public class FakeUrlRepository : IUrlRepository 
