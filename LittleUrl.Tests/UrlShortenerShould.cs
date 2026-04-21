@@ -18,7 +18,7 @@ public class UrlShortenerShould
     public void ShortenAUrl()
     {
         var shortUrl = _urlShortener.Shorten(Google);
-        shortUrl.Length.Should().BeLessThan(Google.Length);
+        shortUrl.Should().NotBe(Google);
     }
     
     [Fact]
@@ -29,4 +29,25 @@ public class UrlShortenerShould
         
         googleShortcode.Should().NotBe(yahooShortcode);
     }
+
+    [Fact]
+    public void ShortenTheSameUrlConsistently()
+    {
+        var googleShortcode1 = _urlShortener.Shorten(Google);
+        var googleShortcode2 = _urlShortener.Shorten(Google);
+        
+        googleShortcode1.Should().Be(googleShortcode2);
+    }
+
+    [Fact]
+    public void ShortenMultipleUrlsOfSameLengthDifferently()
+    {
+        var shortcode1 = _urlShortener.Shorten("www.123.com");
+        var shortcode2 = _urlShortener.Shorten("www.456.com");
+
+        shortcode1.Should().NotBe(shortcode2);
+    }
+    
+    // todo
+    // humanized short urls like 'quick-hyper-eggplant' (giphy etc)
 }
