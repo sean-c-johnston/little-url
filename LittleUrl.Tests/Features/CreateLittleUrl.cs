@@ -11,7 +11,8 @@ public class CreateLittleUrl
     {
         const string originalUrl = "www.google.com";
 
-        var urlRepository = new UrlRepository();
+        var storageProvider = new InMemoryStorage();
+        var urlRepository = new UrlRepository(storageProvider);
         var urlShortener = new UrlShortener(urlRepository);
         
         var shortCode = urlShortener.Shorten(originalUrl);
