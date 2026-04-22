@@ -1,4 +1,3 @@
-using FluentAssertions;
 using LittleUrl.Api.Data;
 using NSubstitute;
 
@@ -14,6 +13,7 @@ public class UrlRepositoryShould
         urlRepository.Add("short-code", "www.google.com");
         
         // I don't like mocks in general, but with repository/db access we can't unit test.
+        // We could use the InMemoryStorage?
         // There'll be an integration test for this later though.
         mockStorage.Received(1).Insert("short-code", "www.google.com");
     }

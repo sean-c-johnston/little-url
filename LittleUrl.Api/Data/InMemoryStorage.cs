@@ -2,13 +2,15 @@ namespace LittleUrl.Api.Data;
 
 public class InMemoryStorage : IStorageProvider
 {
+    private readonly Dictionary<string, string> _urls = new();
+    
     public void Insert(string shortCode, string url)
     {
-        throw new NotImplementedException();
+        _urls[shortCode] = url;
     }
 
-    public string Get(string shortCode)
+    public string? Get(string shortCode)
     {
-        throw new NotImplementedException();
+        return _urls.GetValueOrDefault(shortCode);
     }
 }

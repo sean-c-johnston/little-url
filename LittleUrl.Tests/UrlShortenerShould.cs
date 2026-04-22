@@ -12,7 +12,7 @@ public class UrlShortenerShould
 
     public UrlShortenerShould()
     {
-        var urlRepository = new FakeUrlRepository();
+        var urlRepository = new UrlRepository(new InMemoryStorage());
         _urlShortener = new UrlShortener(urlRepository);
     }
 
@@ -76,19 +76,5 @@ public class UrlShortenerShould
     // todo
     // humanized short urls like 'quick-hyper-eggplant' (giphy etc)
     // create proper objects for the urls instead of strings
-}
-
-public class FakeUrlRepository : IUrlRepository 
-{
-    private readonly Dictionary<string, string> _urls = new();
-
-    public void Add(string shortCode, string url)
-    {
-        _urls[shortCode] = url;
-    }
-
-    public string Get(string shortCode)
-    {
-        return _urls[shortCode];
-    }
+    // DB implementation
 }
