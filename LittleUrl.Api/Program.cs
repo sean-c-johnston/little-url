@@ -21,10 +21,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/url/create", (CreateShortUrl req, IUrlShortener urlShortener) =>
-    {
-        return urlShortener.Shorten(req.Url);
-    })
+app.MapPost("/url/create",
+        (CreateShortUrl req, IUrlShortener urlShortener) => { return urlShortener.Shorten(req.Url); })
     .WithName("CreateShortUrl");
+
+app.MapGet("/{shortcode}", (string shortcode) => { return Results.Redirect(shortcode); }).WithName("ResolveShortUrl");
 
 app.Run();

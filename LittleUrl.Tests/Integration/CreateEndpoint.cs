@@ -32,6 +32,15 @@ public class CreateEndpoint : IClassFixture<WebApplicationFactory<Program>>
         response.Should().Be(_googleShortcode);
     }
 
+    [Fact]
+    public async Task ResolveAUrlThatExists()
+    {
+        var client = _factory.CreateClient();
+        var response = await client.GetAsync($"/hellothere");
+        
+        response.StatusCode.Should().Be(System.Net.HttpStatusCode.Redirect);
+    }
+
     private static StringContent BuildRequestFrom(CreateShortUrl data)
     {
         var content = new StringContent(JsonSerializer.Serialize(data));
