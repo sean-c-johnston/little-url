@@ -1,3 +1,4 @@
+using LittleUrl.Api.Contracts;
 using LittleUrl.Api.Data;
 using LittleUrl.Api.Domain;
 
@@ -20,15 +21,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/url/create", (Requests.CreateShortUrl req, IUrlShortener urlShortener) =>
+app.MapPost("/url/create", (CreateShortUrl req, IUrlShortener urlShortener) =>
     {
         return urlShortener.Shorten(req.Url);
     })
     .WithName("CreateShortUrl");
 
 app.Run();
-
-public class Requests
-{
-    public record CreateShortUrl(string Url);
-}

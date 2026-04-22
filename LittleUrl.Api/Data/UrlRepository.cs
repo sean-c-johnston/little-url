@@ -1,5 +1,11 @@
 namespace LittleUrl.Api.Data;
 
+public interface IUrlRepository
+{
+    void Add(string shortCode, string url);
+    string Get(string shortCode);
+}
+
 public class UrlRepository : IUrlRepository
 {
     private readonly IStorageProvider _storageProvider;
@@ -18,10 +24,4 @@ public class UrlRepository : IUrlRepository
     {
         return _storageProvider.Get(shortCode);
     }
-}
-
-public interface IUrlRepository
-{
-    void Add(string shortCode, string url);
-    string Get(string shortCode);
 }
