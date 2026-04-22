@@ -5,7 +5,7 @@ namespace LittleUrl.Api.Domain;
 public interface IUrlShortener
 {
     string Shorten(string originalUrl);
-    string Resolve(string shortCode);
+    string? Resolve(string shortCode);
 }
 
 public class UrlShortener : IUrlShortener
@@ -24,7 +24,7 @@ public class UrlShortener : IUrlShortener
         return shortCode;
     }
 
-    public string Resolve(string shortCode)
+    public string? Resolve(string shortCode)
     {
         return _urlRepository.Get(shortCode);
     }

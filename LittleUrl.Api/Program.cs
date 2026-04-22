@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IUrlShortener, UrlShortener>();
 builder.Services.AddScoped<IUrlRepository, UrlRepository>();
-builder.Services.AddScoped<IStorageProvider, InMemoryStorage>();
+builder.Services.AddSingleton<IStorageProvider, InMemoryStorage>();
 
 var app = builder.Build();
 
@@ -25,6 +25,10 @@ app.MapPost("/url/create",
         (CreateShortUrl req, IUrlShortener urlShortener) => { return urlShortener.Shorten(req.Url); })
     .WithName("CreateShortUrl");
 
-app.MapGet("/{shortcode}", (string shortcode) => { return Results.Redirect(shortcode); }).WithName("ResolveShortUrl");
+app.MapGet("/{shortcode}", (string shortcode, IUrlShortener urlShortener) =>
+{
+    var url = urlShortener.Resolve(shortcode);
+    return url is null ? Results.NotFound() : Results.Redirect(shortcode);
+}).WithName("ResolveShortUrl");
 
 app.Run();
