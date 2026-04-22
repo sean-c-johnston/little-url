@@ -1,8 +1,14 @@
+using LittleUrl.Api.Data;
+using LittleUrl.Api.Domain;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddScoped<IUrlShortener, UrlShortener>();
+builder.Services.AddScoped<IUrlRepository, UrlRepository>();
+builder.Services.AddScoped<IStorageProvider, InMemoryStorage>();
 
 var app = builder.Build();
 
@@ -14,10 +20,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/shorten", () =>
+app.MapPost("/url/create", (Requests.CreateShortUrl req, IUrlShortener urlShortener) =>
     {
-        return "";
+        return urlShortener.Shorten(req.Url);
     })
     .WithName("CreateShortUrl");
 
 app.Run();
+
+public class Requests
+{
+    public record CreateShortUrl(string Url);
+}

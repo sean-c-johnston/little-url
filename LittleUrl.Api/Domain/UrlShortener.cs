@@ -4,7 +4,13 @@ using LittleUrl.Api.Data;
 
 namespace LittleUrl.Api.Domain;
 
-public class UrlShortener
+public interface IUrlShortener
+{
+    string Shorten(string originalUrl);
+    string Resolve(string shortCode);
+}
+
+public class UrlShortener : IUrlShortener
 {
     private readonly IUrlRepository _urlRepository;
 
